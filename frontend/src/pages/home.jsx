@@ -9,7 +9,7 @@ function Home() {
     useEffect(() => {
         const fetchInternships = async () => {
             try {
-                const response = await fetch('http://localhost:4000/') // Replace with your backend URL
+                const response = await fetch('http://localhost:5000/api') // Replace with your backend URL
                 const data = await response.json()
                 setInternships(data)
             } catch (error) {
@@ -22,7 +22,7 @@ function Home() {
 
     const handleAddToFavorites = async (id) => {
         try {
-            const response = await fetch(`http://localhost:4000/${id}/favorite`, {
+            const response = await fetch(`http://localhost:5000/api/${id}/favorite`, {
                 method: 'PUT',
             })
             if (response.ok) {

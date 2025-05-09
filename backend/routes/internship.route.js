@@ -21,25 +21,26 @@ router.post('/', async (req, res) => {
 })
 // PUT to update isFavorite to true
 router.put('/:id/favorite', async (req, res) => {
-    const { id } = req.params
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({ error: "Missing ID parameter" });
+    }
     try {
-
-        const current_favorite = await Internship.findById(id)
-        // console.log("Current Favorite:", current_favorite)
+        const current_favorite = await Internship.findById(id);
+        if (!current_favorite) {
+            return res.status(404).json({ error: "Internship not found" });
+        }
 
         const internship = await Internship.findByIdAndUpdate(
             id,
-            { isFavorite: current_favorite.isFavorite === "false" ? "true" : "false"  },
-            { new: true } // Return the updated document
-        )
-        if (!internship) {
-            return res.status(404).json({ error: "Internship not found" })
-        }
-        res.status(200).json(internship)
+            { isFavorite: current_favorite.isFavorite === "false" ? "true" : "false" },
+            { new: true }
+        );
+        res.status(200).json(internship);
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        res.status(400).json({ error: error.message });
     }
-})
+});
 // GET favorite internships
 router.get('/favorites', async (req, res) => {
     try {
